@@ -60,7 +60,6 @@ contract BaseBookEscrow is ReentrancyGuard, Ownable {
     error AlreadyWithdrawn();
     error UnauthorizedWithdrawal();
     error InsufficientAllowance();
-    error TransferFailed();
 
     constructor(address _usdcToken) Ownable(msg.sender) {
         require(_usdcToken != address(0), "BaseBookEscrow: Invalid USDC token address");
