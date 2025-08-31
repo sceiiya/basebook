@@ -2,6 +2,7 @@
   "name": "basebook-contracts",
   "version": "1.0.0",
   "description": "Smart contracts for BaseBook remittance platform",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "build": "hardhat compile",
