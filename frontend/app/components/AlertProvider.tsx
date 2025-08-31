@@ -127,6 +127,11 @@ function AlertItem({ alert, onRemove }: AlertItemProps) {
     }
   };
 
+  // Extract transaction hash from message if present
+  const hashMatch = message?.match(/Transaction hash: (0x[a-fA-F0-9]{64})/);
+  const txHash = hashMatch?.[1];
+  const messageWithoutHash = hashMatch ? message?.replace(/Transaction hash: 0x[a-fA-F0-9]{64}/, '').trim() : message;
+
   return (
     <div className={clsx(
       "max-w-sm w-full border rounded-lg shadow-lg p-4 animate-fade-in",
@@ -138,8 +143,24 @@ function AlertItem({ alert, onRemove }: AlertItemProps) {
         </div>
         <div className="ml-3 flex-1">
           <p className="text-sm font-medium text-gray-900">{title}</p>
-          {message && (
-            <p className="mt-1 text-sm text-gray-600">{message}</p>
+          {messageWithoutHash && (
+            <p className="mt-1 text-sm text-gray-600">{messageWithoutHash}</p>
+          )}
+          {txHash && (
+            <div className="mt-2 space-y-1">
+              <p className="text-xs text-gray-500">Transaction Hash:</p>
+              <div className="flex items-center space-x-2">
+                <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+                  {txHash.slice(0, 10)}...{txHash.slice(-8)}
+                </code>
+                <button
+                  onClick={() => window.open(`https://sepolia.basescan.org/tx/${txHash}`, '_blank')}
+                  className="text-xs text-blue-600 hover:text-blue-800 underline"
+                >
+                  View on Explorer
+                </button>
+              </div>
+            </div>
           )}
         </div>
         <div className="ml-4 flex-shrink-0">

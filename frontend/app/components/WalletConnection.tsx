@@ -4,12 +4,18 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { clsx } from "clsx";
 import { Wallet, LogOut, Copy, ExternalLink } from "lucide-react";
 import { useAlert } from "./AlertProvider";
+import { useEffect, useState } from "react";
 
 export function WalletConnection() {
   const { address, isConnected, chain } = useAccount();
   const { connect, connectors, isPending } = useConnect();
   const { disconnect } = useDisconnect();
   const { success, error } = useAlert();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleCopyAddress = () => {
     if (address) {
@@ -31,6 +37,21 @@ export function WalletConnection() {
       connect({ connector });
     }
   };
+
+  // Prevent hydration mismatch by showing loading state on server
+  if (!isMounted) {
+    return (
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="text-center">
+          <div className="p-3 bg-gray-100 rounded-full w-fit mx-auto mb-3">
+            <Wallet className="h-8 w-8 text-gray-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Wallet...</h3>
+          <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
 
   if (isConnected && address) {
     return (

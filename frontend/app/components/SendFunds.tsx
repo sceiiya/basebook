@@ -46,22 +46,22 @@ export function SendFunds() {
 
   // Handle approve success
   useEffect(() => {
-    if (isApproveSuccess) {
-      success("Approval successful!", "You can now send funds");
+    if (isApproveSuccess && approveHash) {
+      success("Approval successful!", `Transaction hash: ${approveHash}`);
       refetchAllowance();
       setStep("send");
     }
-  }, [isApproveSuccess, success, refetchAllowance]);
+  }, [isApproveSuccess, approveHash, success, refetchAllowance]);
 
   // Handle send success
   useEffect(() => {
-    if (isSendSuccess) {
-      success("Transfer successful!", `Sent ${amount} MUSDC to recipient`);
+    if (isSendSuccess && sendHash) {
+      success("Transfer successful!", `Sent ${amount} MUSDC to recipient. Transaction hash: ${sendHash}`);
       setRecipient("");
       setAmount("");
       setStep("form");
     }
-  }, [isSendSuccess, success, amount]);
+  }, [isSendSuccess, sendHash, success, amount]);
 
   const handleApprove = async () => {
     try {
@@ -146,7 +146,7 @@ export function SendFunds() {
             value={recipient}
             onChange={(e) => setRecipient(e.target.value)}
             placeholder="0x..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
           />
         </div>
         {recipient && !isValidRecipient && (
@@ -169,7 +169,7 @@ export function SendFunds() {
             placeholder="0.00"
             step="0.000001"
             min="0"
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
           />
         </div>
         
@@ -274,6 +274,67 @@ export function SendFunds() {
             }`}></div>
             <span>Send</span>
           </div>
+        </div>
+      )}
+
+      {/* Transaction Status */}
+      {(approveHash || sendHash) && (
+        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+          <h4 className="font-medium text-gray-900">Transaction Status</h4>
+          
+          {approveHash && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Approval Transaction:</span>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  isApproveConfirming ? "bg-yellow-100 text-yellow-800" :
+                  isApproveSuccess ? "bg-green-100 text-green-800" : 
+                  "bg-gray-100 text-gray-800"
+                }`}>
+                  {isApproveConfirming ? "Confirming..." : isApproveSuccess ? "Confirmed" : "Pending"}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs text-gray-500">Hash:</span>
+                <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+                  {approveHash}
+                </code>
+                <button
+                  onClick={() => window.open(`https://sepolia.basescan.org/tx/${approveHash}`, '_blank')}
+                  className="text-xs text-blue-600 hover:text-blue-800"
+                >
+                  View
+                </button>
+              </div>
+            </div>
+          )}
+
+          {sendHash && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Send Transaction:</span>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  isSendConfirming ? "bg-yellow-100 text-yellow-800" :
+                  isSendSuccess ? "bg-green-100 text-green-800" : 
+                  "bg-gray-100 text-gray-800"
+                }`}>
+                  {isSendConfirming ? "Confirming..." : isSendSuccess ? "Confirmed" : "Pending"}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs text-gray-500">Hash:</span>
+                <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+                  {sendHash}
+                </code>
+                <button
+                  onClick={() => window.open(`https://sepolia.basescan.org/tx/${sendHash}`, '_blank')}
+                  className="text-xs text-blue-600 hover:text-blue-800"
+                >
+                  View
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </form>

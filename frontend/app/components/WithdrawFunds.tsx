@@ -34,12 +34,12 @@ export function WithdrawFunds() {
 
   // Handle withdraw success
   useEffect(() => {
-    if (isWithdrawSuccess) {
-      success("Withdrawal successful!", "Funds have been transferred to your wallet");
+    if (isWithdrawSuccess && withdrawHash) {
+      success("Withdrawal successful!", `Funds have been transferred to your wallet. Transaction hash: ${withdrawHash}`);
       setTransactionId("");
       setSelectedTxId(null);
     }
-  }, [isWithdrawSuccess, success]);
+  }, [isWithdrawSuccess, withdrawHash, success]);
 
   const handleWithdraw = async () => {
     try {
@@ -129,7 +129,7 @@ export function WithdrawFunds() {
               onChange={(e) => setTransactionId(e.target.value)}
               placeholder="Enter transaction ID"
               min="1"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
             />
           </div>
           <p className="mt-1 text-xs text-gray-500">
@@ -151,17 +151,17 @@ export function WithdrawFunds() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Amount:</span>
-                  <span className="font-medium">{formatUSDC(transaction.amount)} MUSDC</span>
+                  <span className="font-medium text-black">{formatUSDC(transaction.amount)} MUSDC</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">From:</span>
-                  <span className="font-mono text-xs">
+                  <span className="font-mono text-xs text-black">
                     {transaction.sender.slice(0, 6)}...{transaction.sender.slice(-4)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">To:</span>
-                  <span className="font-mono text-xs">
+                  <span className="font-mono text-xs text-black">
                     {transaction.recipient.slice(0, 6)}...{transaction.recipient.slice(-4)}
                   </span>
                 </div>
@@ -185,7 +185,7 @@ export function WithdrawFunds() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Date:</span>
-                  <span>{new Date(Number(transaction.timestamp) * 1000).toLocaleDateString()}</span>
+                  <span className="text-black">{new Date(Number(transaction.timestamp) * 1000).toLocaleDateString()}</span>
                 </div>
 
                 {/* Withdrawal eligibility */}
@@ -209,6 +209,38 @@ export function WithdrawFunds() {
                 <span className="text-sm">Transaction not found</span>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Transaction Status */}
+        {withdrawHash && (
+          <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+            <h4 className="font-medium text-gray-900">Transaction Status</h4>
+            
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Withdrawal Transaction:</span>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  isWithdrawConfirming ? "bg-yellow-100 text-yellow-800" :
+                  isWithdrawSuccess ? "bg-green-100 text-green-800" : 
+                  "bg-gray-100 text-gray-800"
+                }`}>
+                  {isWithdrawConfirming ? "Confirming..." : isWithdrawSuccess ? "Confirmed" : "Pending"}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs text-gray-500">Hash:</span>
+                <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+                  {withdrawHash}
+                </code>
+                <button
+                  onClick={() => window.open(`https://sepolia.basescan.org/tx/${withdrawHash}`, '_blank')}
+                  className="text-xs text-blue-600 hover:text-blue-800"
+                >
+                  View
+                </button>
+              </div>
+            </div>
           </div>
         )}
 

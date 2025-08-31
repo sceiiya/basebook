@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useAccount } from "wagmi";
-import { History, ArrowUpRight, ArrowDownLeft, ExternalLink, User, RefreshCw } from "lucide-react";
+import { History, ArrowUpRight, ArrowDownLeft, ExternalLink, User, RefreshCw, ChevronDown, ChevronUp, Hash } from "lucide-react";
 import { 
   useSenderTransactions, 
   useRecipientTransactions, 
@@ -135,6 +135,7 @@ function TransactionItem({
   userAddress: `0x${string}` | undefined;
 }) {
   const { data: transaction, isLoading } = useTransaction(txId);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   if (isLoading) {
     return (
@@ -196,6 +197,17 @@ function TransactionItem({
               }`}>
                 {transaction.isWithdrawn ? "Completed" : "Pending"}
               </span>
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-gray-400 hover:text-gray-600"
+                title="View transaction details"
+              >
+                {isExpanded ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
+              </button>
             </div>
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <span>
@@ -230,6 +242,62 @@ function TransactionItem({
           </p>
         </div>
       </div>
+
+      {/* Expanded Transaction Details */}
+      {isExpanded && (
+        <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-gray-500 mb-1">Transaction ID</p>
+              <p className="font-mono bg-gray-50 px-2 py-1 rounded">{txId}</p>
+            </div>
+            <div>
+              <p className="text-gray-500 mb-1">Amount</p>
+              <p className="font-medium">{formatUSDC(transaction.amount)} MUSDC</p>
+            </div>
+            <div>
+              <p className="text-gray-500 mb-1">{isSent ? "Recipient" : "Sender"}</p>
+              <div className="flex items-center space-x-2">
+                <p className="font-mono bg-gray-50 px-2 py-1 rounded">
+                  {otherAddress}
+                </p>
+                <button
+                  onClick={() => window.open(`https://sepolia.basescan.org/address/${otherAddress}`, '_blank')}
+                  className="text-blue-600 hover:text-blue-800"
+                  title="View address on BaseScan"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+            <div>
+              <p className="text-gray-500 mb-1">Status</p>
+              <p className="font-medium">
+                {transaction.isWithdrawn ? "Withdrawn" : "Available for withdrawal"}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-500 mb-1">Date & Time</p>
+              <p>{date.toLocaleDateString()} at {date.toLocaleTimeString()}</p>
+            </div>
+            <div>
+              <p className="text-gray-500 mb-1">Network</p>
+              <p>Base Sepolia Testnet</p>
+            </div>
+          </div>
+          
+          {/* Action buttons */}
+          <div className="flex items-center space-x-2 pt-2">
+            <button
+              onClick={handleViewOnExplorer}
+              className="flex items-center space-x-1 text-sm text-blue-600 hover:text-blue-800"
+            >
+              <Hash className="h-4 w-4" />
+              <span>View Transaction Details</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

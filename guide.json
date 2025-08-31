@@ -1,0 +1,182 @@
+{
+  "projectRequirements": {
+    "projectOverview": {
+      "teamName": "MetaBase",
+      "projectName": "BaseBook",
+      "description": "A decentralized remittance platform for sending stablecoins with escrow functionality, wallet integration, and transaction tracking.",
+      "mainFeatures": [
+        "Create or import wallets using Base Smart Wallet (reference: https://docs.base.org/base-account/quickstart/web-react).",
+        "Connect to a custom smart contract for escrow-based transfers.",
+        "Send mock USDC from sender to recipient via escrow.",
+        "Recipient can withdraw funds from escrow.",
+        "Display transaction history in a table.",
+        "Simple, clean UI with success/error alerts."
+      ],
+      "deployment": {
+        "frontend": "Vercel",
+        "smartContract": "Base Sepolia using Hardhat"
+      }
+    },
+    "techStack": {
+      "frontend": "Next.js (App Router), TypeScript, Tailwind CSS",
+      "smartContracts": "Solidity, Hardhat",
+      "blockchain": "Base Sepolia Testnet",
+      "walletIntegration": "Wagmi, Viem, Base Smart Wallet, MetaMask",
+      "deploymentTools": "Vercel (frontend), Hardhat (smart contract)",
+      "extras": "dotenv for secrets (RPC URLs, private keys)"
+    },
+    "features": {
+      "frontend": [
+        "Wallet connection (Base Smart Wallet or MetaMask).",
+        "Sender UI: Form to input recipient address and amount.",
+        "Recipient UI: Form to input transaction ID and withdraw funds.",
+        "Transaction history table (sender, recipient, amount, timestamp, status).",
+        "Tailwind-styled, minimal UI with success/error alerts."
+      ],
+      "smartContract": [
+        "Solidity contract for escrow functionality.",
+        "Accepts mock USDC (ERC20) for testing.",
+        "Escrow holds funds until recipient withdraws.",
+        "Events for send and withdraw actions.",
+        "Access control: only sender initiates, only recipient withdraws."
+      ]
+    },
+    "hardhatSetup": {
+      "configuration": "hardhat.config.ts configured for Base Sepolia.",
+      "deploymentScript": "scripts/deploy.ts",
+      "secretsManagement": "Use .env for RPC URLs and private keys."
+    },
+    "fileStructure": {
+      "BaseBook": {
+        "contracts": {
+          "contracts": {
+            "BaseBookEscrow.sol": "Escrow contract",
+            "MockUSDC.sol": "Mock ERC20 token"
+          },
+          "scripts": {
+            "deploy.ts": "Deployment script"
+          },
+          "test": {
+            "BaseBookEscrow.test.ts": "Contract tests"
+          },
+          "rootFiles": [
+            "hardhat.config.ts",
+            ".env",
+            "package.json"
+          ]
+        },
+        "frontend": {
+          "app": [
+            "page.tsx",
+            "layout.tsx",
+            "globals.css"
+          ],
+          "components": [
+            "WalletConnect.tsx",
+            "SendForm.tsx",
+            "ReceiveForm.tsx",
+            "TransactionHistory.tsx"
+          ],
+          "lib": [
+            "wagmi.ts",
+            "contract.ts"
+          ],
+          "public": {},
+          "rootFiles": [
+            "next.config.js",
+            "tailwind.config.js",
+            "tsconfig.json",
+            "package.json"
+          ]
+        },
+        "rootFile": "README.md"
+      }
+    }
+  },
+  "deliverables": {
+    "codebase": [
+      "Complete /contracts folder with Solidity contracts, Hardhat config, and tests.",
+      "Complete /frontend folder with Next.js app, Tailwind CSS, and wallet integration."
+    ],
+    "deploymentScripts": [
+      "Hardhat script to deploy contracts to Base Sepolia.",
+      "Instructions for Vercel deployment."
+    ],
+    "smartContract": [
+      "MockUSDC.sol: ERC20 token for testing.",
+      "BaseBookEscrow.sol: Escrow contract with send/withdraw functions, events, and access control."
+    ],
+    "frontend": [
+      "Connect wallet (Base Smart Wallet or MetaMask).",
+      "Forms for sending and withdrawing funds.",
+      "Transaction history table.",
+      "Tailwind-styled UI with alerts."
+    ],
+    "readme": [
+      "Instructions for setting up, testing, and deploying both smart contract and frontend.",
+      "Include .env setup for secrets."
+    ],
+    "testing": [
+      "Hardhat tests for smart contract functionality."
+    ]
+  },
+  "deployment": {
+    "smartContractPlatform": "Base Sepolia using Hardhat",
+    "frontendPlatform": "Vercel",
+    "secretsManagement": "Use .env for sensitive data (e.g., BASE_SEPOLIA_RPC_URL, PRIVATE_KEY, NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS)."
+  },
+  "notes": [
+    "Use TypeScript for all code (frontend and Hardhat).",
+    "Prioritize clean architecture and minimal styling.",
+    "Include OpenZeppelin contracts for ERC20 functionality.",
+    "Ensure smart contract is secure with basic access control.",
+    "Provide clear error handling in the frontend."
+  ],
+  "aiAgentInstructions": [
+    "Generate the full codebase based on the file structure above.",
+    "Include all necessary code for smart contracts, frontend components, and deployment scripts.",
+    "Use the Base Smart Wallet SDK (per https://docs.base.org/base-account/quickstart/web-react) for wallet creation/import.",
+    "Ensure the smart contract supports escrow functionality and integrates with the frontend.",
+    "Provide a detailed README.md with setup, testing, and deployment instructions.",
+    "Output the code in a structured format, with each file clearly labeled.",
+    "Include comments in the code for clarity.",
+    "Verify that the generated code aligns with the tech stack and requirements.",
+    "If any clarification is needed, assume reasonable defaults."
+  ],
+  "deploymentStatus": {
+    "contractAddresses": {
+      "MockUSDC": "0x1E024B4a268d2E4cf3BCe5a54357257134de8515",
+      "BaseBookEscrow": "0xB4ce2e92f30B2E11fd42AD18cB743B414C5523d9"
+    },
+    "networkInformation": {
+      "chainID": 84532,
+      "name": "Base Sepolia",
+      "rpcURL": "https://sepolia.base.org",
+      "explorerURL": "https://sepolia.basescan.org"
+    },
+    "nextStepsForFrontend": [
+      {
+        "step": 1,
+        "action": "Update frontend/.env.local with contract addresses.",
+        "variables": {
+          "NEXT_PUBLIC_MOCK_USDC_ADDRESS": "0x1E024B4a268d2E4cf3BCe5a54357257134de8515",
+          "NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS": "0xB4ce2e92f30B2E11fd42AD18cB743B414C5523d9"
+        }
+      },
+      {
+        "step": 2,
+        "action": "Install frontend dependencies.",
+        "command": "cd ../frontend && pnpm install"
+      },
+      {
+        "step": 3,
+        "action": "Start the frontend development server.",
+        "command": "pnpm dev"
+      }
+    ],
+    "contractLinks": {
+      "MockUSDC": "https://sepolia.basescan.org/address/0x1E024B4a268d2E4cf3BCe5a54357257134de8515",
+      "Escrow": "https://sepolia.basescan.org/address/0xB4ce2e92f30B2E11fd42AD18cB743B414C5523d9"
+    }
+  }
+}
