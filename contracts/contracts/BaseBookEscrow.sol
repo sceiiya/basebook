@@ -88,27 +88,25 @@ contract BaseBookEscrow is ReentrancyGuard, Ownable {
         if (allowance < amount) revert InsufficientAllowance();
 
         // Transfer tokens to escrow
-        try usdcToken.safeTransferFrom(msg.sender, address(this), amount) {
-            // Create escrow transaction
-            transactionId = ++_transactionCounter;
-            
-            escrowTransactions[transactionId] = EscrowTransaction({
-                sender: msg.sender,
-                recipient: recipient,
-                amount: amount,
-                timestamp: block.timestamp,
-                isWithdrawn: false,
-                exists: true
-            });
+        usdcToken.safeTransferFrom(msg.sender, address(this), amount);
+        
+        // Create escrow transaction
+        transactionId = ++_transactionCounter;
+        
+        escrowTransactions[transactionId] = EscrowTransaction({
+            sender: msg.sender,
+            recipient: recipient,
+            amount: amount,
+            timestamp: block.timestamp,
+            isWithdrawn: false,
+            exists: true
+        });
 
-            // Update transaction mappings
-            senderTransactions[msg.sender].push(transactionId);
-            recipientTransactions[recipient].push(transactionId);
+        // Update transaction mappings
+        senderTransactions[msg.sender].push(transactionId);
+        recipientTransactions[recipient].push(transactionId);
 
-            emit FundsDeposited(transactionId, msg.sender, recipient, amount, block.timestamp);
-        } catch {
-            revert TransferFailed();
-        }
+        emit FundsDeposited(transactionId, msg.sender, recipient, amount, block.timestamp);
     }
 
     /**
@@ -126,13 +124,8 @@ contract BaseBookEscrow is ReentrancyGuard, Ownable {
         transaction.isWithdrawn = true;
 
         // Transfer funds to recipient
-        try usdcToken.safeTransfer(transaction.recipient, transaction.amount) {
-            emit FundsWithdrawn(transactionId, transaction.recipient, transaction.amount, block.timestamp);
-        } catch {
-            // Revert the withdrawal status if transfer fails
-            transaction.isWithdrawn = false;
-            revert TransferFailed();
-        }
+        usdcToken.safeTransfer(transaction.recipient, transaction.amount);
+        emit FundsWithdrawn(transactionId, transaction.recipient, transaction.amount, block.timestamp);
     }
 
     /**
@@ -154,13 +147,8 @@ contract BaseBookEscrow is ReentrancyGuard, Ownable {
         transaction.isWithdrawn = true;
 
         // Transfer funds back to sender
-        try usdcToken.safeTransfer(transaction.sender, transaction.amount) {
-            emit EmergencyWithdrawal(transactionId, transaction.sender, transaction.amount, block.timestamp);
-        } catch {
-            // Revert the withdrawal status if transfer fails
-            transaction.isWithdrawn = false;
-            revert TransferFailed();
-        }
+        usdcToken.safeTransfer(transaction.sender, transaction.amount);
+        emit EmergencyWithdrawal(transactionId, transaction.sender, transaction.amount, block.timestamp);
     }
 
     /**
