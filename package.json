@@ -1,14 +1,17 @@
-@@ .. @@
-   "dependencies": {
-     "@coinbase/onchainkit": "latest",
-     "@coinbase/wallet-sdk": "^4.0.3",
--    "next": "^15.3.3",
-+    "next": "^14.2.5",
-     "react": "^18",
-     "react-dom": "^18",
-@@ .. @@
-     "@types/react-dom": "^18",
-     "eslint": "^8",
--    "eslint-config-next": "15.3.3",
-+    "eslint-config-next": "^14.2.5",
-     "eslint-config-prettier": "^10.1.1",
+{
+  "name": "rembit",
+  "version": "1.0.0",
+  "description": "Decentralized remittance platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd frontend && pnpm dev",
+    "build": "cd frontend && pnpm build",
+    "start": "cd frontend && pnpm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["blockchain", "remittance", "web3"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

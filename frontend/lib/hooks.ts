@@ -1,6 +1,6 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
-import { CONTRACTS, MOCK_USDC_ABI, ESCROW_ABI, type EscrowTransaction } from "./contracts";
+import { CONTRACTS, MOCK_USDC_ABI, ESCROW_ABI } from "./contracts";
 
 // USDC Token Hooks
 export function useUSDCBalance(address: `0x${string}` | undefined) {

@@ -10,7 +10,7 @@ export function WalletConnection() {
   const { address, isConnected, chain } = useAccount();
   const { connect, connectors, isPending } = useConnect();
   const { disconnect } = useDisconnect();
-  const { success, error } = useAlert();
+  const { success } = useAlert();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

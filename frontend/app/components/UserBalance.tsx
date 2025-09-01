@@ -123,7 +123,7 @@ export function UserBalance() {
 
       <div className="mt-4 text-center">
         <p className="text-xs text-gray-500">
-          Click "Get Test USDC" to receive 100 MUSDC for testing
+          Click &quot;Get Test USDC&quot; to receive 100 MUSDC for testing
         </p>
       </div>
     </div>

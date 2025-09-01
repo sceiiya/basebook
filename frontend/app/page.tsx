@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
+import Image from "next/image";
 import { WalletConnection } from "./components/WalletConnection";
 import { SendFunds } from "./components/SendFunds";
 import { WithdrawFunds } from "./components/WithdrawFunds";
@@ -17,7 +18,7 @@ export default function App() {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <img src="/logo.png" alt="BaseBook" className="h-12 w-12 mr-3" />
+              <Image src="/logo.png" alt="BaseBook" width={48} height={48} className="h-12 w-12 mr-3" />
               <h1 className="text-4xl font-bold text-gray-900">BaseBook</h1>
             </div>
             <p className="text-lg text-gray-600 mb-6">

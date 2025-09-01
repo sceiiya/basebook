@@ -127,8 +127,7 @@ export function TransactionHistory() {
 // Component for individual transaction items
 function TransactionItem({ 
   txId, 
-  type, 
-  userAddress 
+  type 
 }: { 
   txId: number; 
   type: "sent" | "received"; 
