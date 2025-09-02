@@ -1,13 +1,7 @@
 {
-  "buildCommand": "cd frontend && pnpm build",
-  "outputDirectory": "frontend/.next",
-  "installCommand": "cd frontend && pnpm install",
   "framework": "nextjs",
-  "functions": {
-    "frontend/app/api/*/route.ts": {
-      "runtime": "nodejs20.x"
-    }
-  },
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
   "env": {
     "NEXT_PUBLIC_APP_NAME": "BaseBook",
     "NEXT_PUBLIC_APP_DESCRIPTION": "Decentralized remittance platform for Filipino workers"
