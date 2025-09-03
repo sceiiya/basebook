@@ -6,6 +6,13 @@
 **Project:** BaseBook  
 **Description:** A decentralized remittance platform for sending stablecoins with escrow functionality, wallet integration, and transaction tracking.
 
+## Get to Know the Pillars behind Metabase 
+
+- **zeuswae.base.eth**
+- **riewagmization.base.eth**
+- **cartss.base.eth**
+- **sceiiya.base.eth**
+
 BaseBook enables Overseas Filipino Workers (OFWs) to send stablecoins (mock USDC) to recipients in the Philippines using the Base Sepolia testnet.
 
 ## 🌟 Features
